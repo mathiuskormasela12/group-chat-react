@@ -24,7 +24,8 @@ export const GlobalStyles = createGlobalStyle`
 
 	* {
 		margin: 0;
-		padding: 
+		padding: 0;
+		box-sizing: border-box;
 	}
 
 	h1 {
