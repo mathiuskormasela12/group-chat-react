@@ -142,6 +142,11 @@ export default JoinChatRoom;
 const Hero = styled.div`
 	background-color: ${Colors.light};
 	height: 100vh;
+
+	@media (max-width: 768px) and (orientation: landscape) {
+		height: auto;
+		padding: 15vmax 0;
+	}
 `;
 
 const HeroFlex = styled.div`
@@ -162,6 +167,12 @@ const HeroCol = styled.div<IHeroColJoinPageProps>`
 					justify-content: flex-end;
 					flex: 2;
 				}
+
+				@media (max-width: 1200px) {
+					&:last-child {
+						display: none;
+					}
+				}
 			`;
     }
 
@@ -174,7 +185,15 @@ const HeroCol = styled.div<IHeroColJoinPageProps>`
 		&:last-child {
 			justify-content: center;
 			flex: 1;
-		}`;
+		}
+
+		@media (max-width: 1200px) {
+			&:first-child {
+				display: none;
+			}
+		}
+		
+		`;
   }}
 `;
 
@@ -188,6 +207,10 @@ const Title = styled.h1`
 	color: ${Colors.dark};
 	font-family: ${Fonts.bold};
 	margin-bottom: 2rem;
+
+	@media(max-width: 1200px) {
+		text-align: center;
+	}
 `;
 
 const Form = styled.form`
