@@ -6,3 +6,4 @@ export * from './IReduxStates';
 export * from './IAuthReduxAction';
 export * from './IContainerProps';
 export * from './IHeroColJoinPageProps';
+export * from './IHeaderProps';

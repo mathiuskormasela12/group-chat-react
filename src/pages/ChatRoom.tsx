@@ -4,6 +4,7 @@ import React, { FormEvent } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { IReduxStates } from '../interfaces';
 import { setToken } from '../redux/actions';
+import { Header } from '../components';
 
 const ChatRoom: React.FC = () => {
   const dispatch = useDispatch();
@@ -21,6 +22,7 @@ const ChatRoom: React.FC = () => {
 
   return (
     <div>
+      <Header title="Chat Room" />
       <h1>Chat Room</h1>
       <form>
         {accessToken !== '' && (

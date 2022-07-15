@@ -3,12 +3,17 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import styled from 'styled-components';
 import { Colors, Fonts } from '../themes';
+import { IHeroColJoinPageProps } from '../interfaces';
 import joinRoomImg from '../assets/images/join-room.svg';
 import changingRoomName from '../assets/images/changing-room-name.svg';
 
 // import all components
-import { Container, TextField, Button } from '../components';
-import { IHeroColJoinPageProps } from '../interfaces';
+import {
+  Container,
+  TextField,
+  Button,
+  Header,
+} from '../components';
 
 const JoinChatRoom: React.FC = () => {
   const [state, setState] = useState({
@@ -37,6 +42,7 @@ const JoinChatRoom: React.FC = () => {
   if (!state.isJoinPage) {
     return (
       <Hero>
+        <Header title="Join a Room" />
         <Container inheritHeight>
           <HeroFlex>
             <HeroCol isJoinPage={state.isJoinPage}>
@@ -74,6 +80,7 @@ const JoinChatRoom: React.FC = () => {
 
   return (
     <Hero>
+      <Header title="Join a Room" />
       <Container inheritHeight>
         <HeroFlex>
           <HeroCol isJoinPage={state.isJoinPage}>
