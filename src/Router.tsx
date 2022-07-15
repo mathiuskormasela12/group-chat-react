@@ -10,6 +10,7 @@ import { GlobalStyles } from './styles';
 // import all pages
 import JoinChatRoom from './pages/JoinChatRoom';
 import ChatRoom from './pages/ChatRoom';
+import PrivateRouter from './PrivateRoute';
 
 const Router: React.FC = () => {
   const { store, persistor } = persistedStore;
@@ -19,7 +20,14 @@ const Router: React.FC = () => {
       <PersistGate persistor={persistor}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<ChatRoom />} />
+            <Route
+              path="/"
+              element={(
+                <PrivateRouter>
+                  <ChatRoom />
+                </PrivateRouter>
+							)}
+            />
             <Route path="/join" element={<JoinChatRoom />} />
           </Routes>
         </BrowserRouter>

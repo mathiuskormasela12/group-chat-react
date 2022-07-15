@@ -4,7 +4,7 @@ import React from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import { IHeaderProps } from '../interfaces';
 
-export const Header: React.FC<IHeaderProps> = ({ title }) => (
+export const Head: React.FC<IHeaderProps> = ({ title }) => (
   <HelmetProvider>
     <Helmet>
       <title>

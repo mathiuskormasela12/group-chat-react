@@ -3,6 +3,6 @@
 import React from 'react';
 
 export interface IContainerProps {
-	children: React.ReactElement;
+	children: React.ReactNode;
 	inheritHeight?: boolean;
 }

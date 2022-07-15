@@ -12,7 +12,7 @@ import {
   Container,
   TextField,
   Button,
-  Header,
+  Head,
 } from '../components';
 
 const JoinChatRoom: React.FC = () => {
@@ -42,7 +42,7 @@ const JoinChatRoom: React.FC = () => {
   if (!state.isJoinPage) {
     return (
       <Hero>
-        <Header title="Join a Room" />
+        <Head title="Join a Room" />
         <Container inheritHeight>
           <HeroFlex>
             <HeroCol isJoinPage={state.isJoinPage}>
@@ -80,7 +80,7 @@ const JoinChatRoom: React.FC = () => {
 
   return (
     <Hero>
-      <Header title="Join a Room" />
+      <Head title="Join a Room" />
       <Container inheritHeight>
         <HeroFlex>
           <HeroCol isJoinPage={state.isJoinPage}>

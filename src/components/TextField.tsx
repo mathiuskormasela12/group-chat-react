@@ -15,6 +15,6 @@ const Input = styled.input`
 	font-size: 1rem;
 	height: 3.2em;
 	background-color: ${Colors.darkGray};
-	padding-left: 1em;
+	padding: 0 1em;
 	border-radius: .5em;
 `;
