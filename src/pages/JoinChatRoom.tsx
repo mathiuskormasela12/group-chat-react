@@ -27,6 +27,7 @@ const JoinChatRoom: React.FC = () => {
     roomId: '',
     roomName: '',
     isJoinPage: true,
+    message: '',
   });
 
   const onChange = (event: ChangeEvent<HTMLInputElement>, name: string) => {
@@ -38,19 +39,35 @@ const JoinChatRoom: React.FC = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setState((currentStates) => ({
-      ...currentStates,
-      isJoinPage: !currentStates.isJoinPage,
-    }));
 
-    if (!state.isJoinPage) {
-      dispatch(
-        setToken(
-          String(Date.now()),
-          String(Date.now()),
-        ),
-      );
-      navigate('/');
+    if (state.isJoinPage) {
+      if (state.name === '' || state.email === '' || state.roomId === '') {
+        setState((currentState) => ({
+          ...currentState,
+          message: 'Please complete the form',
+        }));
+      } else {
+        setState((currentStates) => ({
+          ...currentStates,
+          isJoinPage: !currentStates.isJoinPage,
+          message: '',
+        }));
+      }
+    } else if (!state.isJoinPage) {
+      if (state.roomName === '') {
+        setState((currentState) => ({
+          ...currentState,
+          message: 'Please complete the form',
+        }));
+      } else {
+        dispatch(
+          setToken(
+            String(Date.now()),
+            String(Date.now()),
+          ),
+        );
+        navigate('/');
+      }
     }
   };
 
@@ -85,6 +102,11 @@ const JoinChatRoom: React.FC = () => {
                     Create
                   </Button>
                 </Control>
+                {state.message.length > 0 && (
+                <ErrorText>
+                  {state.message}
+                </ErrorText>
+                )}
               </Form>
             </HeroCol>
           </HeroFlex>
@@ -148,6 +170,11 @@ const JoinChatRoom: React.FC = () => {
                   Join
                 </Button>
               </Control>
+              {state.message.length > 0 && (
+              <ErrorText>
+                {state.message}
+              </ErrorText>
+              )}
             </Form>
           </HeroCol>
           <HeroCol isJoinPage={state.isJoinPage}>
@@ -251,4 +278,11 @@ const Field = styled.div`
 const Label = styled.label`
 	margin-bottom: .8rem;
 	display: inline-block;
+`;
+
+const ErrorText = styled.p`
+	color: ${Colors.danger};
+	font-size: 1rem;
+	margin: 1rem 0;
+	text-align: center;
 `;

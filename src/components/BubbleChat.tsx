@@ -6,10 +6,15 @@ import { IBubbleChatProps } from '../interfaces';
 import { Colors } from '../themes';
 
 export const BubbleChat: React.FC<IBubbleChatProps> = (props) => {
-  const { name, message, isLeft } = props;
+  const {
+    name,
+    message,
+    isLeft,
+    onDoubleClick,
+  } = props;
 
   return (
-    <BubbleContainer {...props}>
+    <BubbleContainer {...props} onDoubleClick={onDoubleClick}>
       {isLeft && (
       <Title>
         {name}

@@ -3,6 +3,7 @@
 import React, { ChangeEvent, useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import styled from 'styled-components';
 import room from '../assets/images/room.svg';
 import loadingIcon from '../assets/images/loading.svg';
@@ -41,6 +42,30 @@ const ChatRoom: React.FC = () => {
   const handleLogout = () => {
     dispatch(setToken('', ''));
     navigate('/join');
+  };
+
+  const handleConfirmDelete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        handleDelete();
+      }
+    });
+  };
+
+  const handleDelete = () => {
+    Swal.fire(
+      'Deleted!',
+      'Your file has been deleted.',
+      'success',
+    );
   };
 
   useEffect(() => {
@@ -111,6 +136,7 @@ const ChatRoom: React.FC = () => {
                   key={item.id.toString()}
                   name={item.users.name}
                   message={item.message}
+                  onDoubleClick={handleConfirmDelete}
                 />
               ))}
             </Content>
@@ -202,6 +228,7 @@ const Text = styled.p`
 	font-size: 1.1rem;
 	cursor: pointer;
 	text-align: right;
+	color: ${Colors.danger};
 `;
 
 const Content = styled.div`
@@ -227,10 +254,36 @@ const Form = styled.form`
 
 const FormColumn = styled.div`
 	&:first-child {
-		width: 88%;
+		width: 85vmax;
 	}
 
 	&:last-child {
-		width: 10%;
+		width: 15vmax;
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	@media (max-width: 1024px) {
+		&:first-child {
+			width: 80vmax;
+		}
+	
+		&:last-child {
+			width: 20vmax;
+			display: flex;
+			justify-content: flex-end;
+		}
+	}
+
+	@media (min-width: 1024px) and (max-width: 1300px) {
+		&:first-child {
+			width: 84vmax;
+		}
+	
+		&:last-child {
+			width: 16vmax;
+			display: flex;
+			justify-content: flex-end;
+		}
 	}
 `;

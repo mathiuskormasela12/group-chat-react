@@ -8,4 +8,5 @@ export const Colors = {
   light: '#FFFFFF',
   dark: '#3F3C3C',
   darker: '#000000',
+  danger: 'hsl(348, 100%, 61%)',
 };
