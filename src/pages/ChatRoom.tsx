@@ -1,10 +1,12 @@
 // ========== Chat Room
 // import all modules
-import React, { ChangeEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { ChangeEvent, useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import room from '../assets/images/room.svg';
+import loadingIcon from '../assets/images/loading.svg';
+import emptyIcon from '../assets/images/empty.svg';
 
 // import all component
 import {
@@ -14,60 +16,19 @@ import {
   SendButton,
   BubbleChat,
 } from '../components';
-import { setToken } from '../redux/actions';
+import { setToken, setMessages, setLoading } from '../redux/actions';
 import { Colors, Fonts } from '../themes';
+import { IMessage, IReduxStates } from '../interfaces';
 
 const ChatRoom: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const uid: number = 2064;
+  const loading: boolean = useSelector((states: IReduxStates) => states.message.loading);
+  const messages: IMessage[] = useSelector((states: IReduxStates) => states.message.messages);
   const [state, setState] = useState({
     message: '',
-    messages: [
-      {
-        id: 1,
-        uid: 4,
-        name: 'Yerin',
-        message: 'Hi Mathius',
-      },
-      {
-        id: 2,
-        uid: 1,
-        message: 'Hi noona',
-      },
-      {
-        id: 3,
-        uid: 4,
-        name: 'Yerin',
-        message: 'How are you?',
-      },
-      {
-        id: 4,
-        uid: 1,
-        message: 'I am great',
-      },
-      {
-        id: 5,
-        uid: 4,
-        name: 'Yerin',
-        message: 'Really?',
-      },
-      {
-        id: 6,
-        uid: 1,
-        message: 'Yes',
-      },
-      {
-        id: 7,
-        uid: 4,
-        name: 'Yerin',
-        message: 'I love you',
-      },
-      {
-        id: 8,
-        uid: 1,
-        message: 'I love you noona, saranghae',
-      },
-    ],
+    messages: [],
   });
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>, name:string) => {
@@ -81,6 +42,31 @@ const ChatRoom: React.FC = () => {
     dispatch(setToken('', ''));
     navigate('/join');
   };
+
+  useEffect(() => {
+    dispatch(setLoading(true));
+    setTimeout(() => {
+      dispatch(setLoading(false));
+      dispatch(setMessages([
+        {
+          id: 1,
+          message: 'Hi Mathius',
+          users: {
+            id: 2064,
+            name: 'Yerin',
+          },
+        },
+        {
+          id: 2,
+          message: 'Ya noona',
+          users: {
+            id: 2065,
+            name: 'Mathius',
+          },
+        },
+      ]));
+    }, 4000);
+  }, []);
 
   return (
     <Hero>
@@ -103,11 +89,27 @@ const ChatRoom: React.FC = () => {
               </HeaderColumn>
             </Header>
             <Content>
-              {state.messages.map((item) => (
+              {loading && (
+              <PlaceholderContainer>
+                <PlaceholderImage
+                  src={loadingIcon}
+                  alt="Loading"
+                />
+              </PlaceholderContainer>
+              )}
+              {!loading && messages.length < 1 && (
+              <PlaceholderContainer>
+                <PlaceholderImage
+                  src={emptyIcon}
+                  alt="Empty"
+                />
+              </PlaceholderContainer>
+              )}
+              {(!loading) && messages.map((item) => (
                 <BubbleChat
-                  isLeft={!!item.name}
+                  isLeft={uid === item.users.id}
                   key={item.id.toString()}
-                  name={item.name ? item.name : ''}
+                  name={item.users.name}
                   message={item.message}
                 />
               ))}
@@ -148,10 +150,32 @@ const Row = styled.div`
 const Col = styled.div`
 	width: 50%;
 
+	@media (max-width: 1200px) {
+		&:first-child {
+			display: none;
+		}
+
+		&:last-child {
+			width: 100% !important;
+		}
+	}
+
 	&:last-child {
 		height: 100%;
 		width: 40%;
 	}
+`;
+
+const PlaceholderContainer = styled.div`
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+`;
+
+const PlaceholderImage = styled.img`
+	width: 80%;
+	height: 80%;
 `;
 
 const Image = styled.img`
