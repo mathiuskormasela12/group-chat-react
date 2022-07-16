@@ -6,13 +6,15 @@ import { IBubbleChatProps } from '../interfaces';
 import { Colors } from '../themes';
 
 export const BubbleChat: React.FC<IBubbleChatProps> = (props) => {
-  const { name, message } = props;
+  const { name, message, isLeft } = props;
 
   return (
     <BubbleContainer {...props}>
+      {isLeft && (
       <Title>
         {name}
       </Title>
+      )}
       <BubbleContent {...props}>
         <Bubble {...props}>
           <Text {...props}>
@@ -28,6 +30,8 @@ const BubbleContainer = styled.div <IBubbleChatProps>`
 	& > h1 {
 		margin-bottom: .6rem;
 	}
+
+	margin-bottom: 1.5rem;
 `;
 
 const BubbleContent = styled.div <IBubbleChatProps>`

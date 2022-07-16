@@ -1,11 +1,14 @@
 // ========== Join Chat Room
 // import all modules
 import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { Colors, Fonts } from '../themes';
 import { IHeroColJoinPageProps } from '../interfaces';
 import joinRoomImg from '../assets/images/join-room.svg';
 import changingRoomName from '../assets/images/changing-room-name.svg';
+import { setToken } from '../redux/actions';
 
 // import all components
 import {
@@ -16,6 +19,8 @@ import {
 } from '../components';
 
 const JoinChatRoom: React.FC = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [state, setState] = useState({
     name: '',
     email: '',
@@ -37,6 +42,16 @@ const JoinChatRoom: React.FC = () => {
       ...currentStates,
       isJoinPage: !currentStates.isJoinPage,
     }));
+
+    if (!state.isJoinPage) {
+      dispatch(
+        setToken(
+          String(Date.now()),
+          String(Date.now()),
+        ),
+      );
+      navigate('/');
+    }
   };
 
   if (!state.isJoinPage) {

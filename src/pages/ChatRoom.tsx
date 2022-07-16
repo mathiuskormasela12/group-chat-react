@@ -181,15 +181,24 @@ const Text = styled.p`
 `;
 
 const Content = styled.div`
-	height: 73%;
+	height: 70%;
 	padding: 0 0 1rem 0;
 	overflow-y: scroll;
+	overflow-y: scroll;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+
+	&::-webkit-scrollbar {
+		width: 0;
+		height: 0;
+	}
 `;
 
 const Form = styled.form`
-	height: 12%;
+	height: 15%;
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 `;
 
 const FormColumn = styled.div`
