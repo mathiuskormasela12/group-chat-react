@@ -15,3 +15,5 @@ export * from './IMessageCommonReduxAction';
 export * from './IMessagesReduxAction';
 export * from './IMessageReduxAction';
 export * from './IMessageLoadingReduxAction';
+export * from './IJoinRoomBody';
+export * from './IMessageRoomNameReduxAction';

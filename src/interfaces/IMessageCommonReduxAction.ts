@@ -10,6 +10,8 @@ export interface IMessageCommonReduxAction {
 			message: IMessage;
 			messages: IMessage[];
 			loading: boolean;
+			roomName: string;
+			roomId: number;
 		};
 	}
 }

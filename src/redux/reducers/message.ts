@@ -8,6 +8,8 @@ import {
 const initialStates: IMessageReduxStates = {
   messages: [],
   loading: false,
+  roomName: '',
+  roomId: 0,
 };
 
 const authReducer = (
@@ -36,6 +38,24 @@ const authReducer = (
       return {
         ...states,
         loading: action.payload.data.loading,
+      };
+    }
+
+    case 'SET_ROOM_NAME': {
+      return {
+        ...states,
+        roomName: action.payload.data.roomName,
+        roomId: action.payload.data.roomId,
+      };
+    }
+
+    case 'RESET_MESSAGE': {
+      return {
+        ...states,
+        roomId: 0,
+        roomName: '',
+        messages: [],
+        loading: false,
       };
     }
 

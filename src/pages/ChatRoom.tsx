@@ -25,6 +25,7 @@ const ChatRoom: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const uid: number = 2064;
+  const roomName: string = useSelector((reduxStates: IReduxStates) => reduxStates.message.roomName);
   const loading: boolean = useSelector((states: IReduxStates) => states.message.loading);
   const messages: IMessage[] = useSelector((states: IReduxStates) => states.message.messages);
   const [state, setState] = useState({
@@ -41,6 +42,9 @@ const ChatRoom: React.FC = () => {
 
   const handleLogout = () => {
     dispatch(setToken('', ''));
+    dispatch({
+      type: 'RESET_MESSAGE',
+    });
     navigate('/join');
   };
 
@@ -107,7 +111,7 @@ const ChatRoom: React.FC = () => {
           <Col>
             <Header>
               <HeaderColumn>
-                <Title>Viviz</Title>
+                <Title>{roomName}</Title>
               </HeaderColumn>
               <HeaderColumn>
                 <Text onClick={handleLogout}>Logout</Text>
@@ -221,6 +225,7 @@ const HeaderColumn = styled.div`
 
 const Title = styled.h1`
 	font-size: 2.2rem;
+	text-transform: capitalize;
 `;
 
 const Text = styled.p`

@@ -12,7 +12,7 @@ import messageReducer from './message';
 const rootPersistConfig = {
   key: 'root',
   storage,
-  blacklist: ['message'],
+  blacklist: [],
 };
 
 const authPersistConfig = {
@@ -21,9 +21,15 @@ const authPersistConfig = {
   stateReconciler: hardSet,
 };
 
+const messagePersistConfig = {
+  key: 'message',
+  storage,
+  stateReconciler: hardSet,
+};
+
 const rootReducer = combineReducers({
   auth: persistReducer(authPersistConfig, authReducer),
-  message: messageReducer,
+  message: persistReducer(messagePersistConfig, messageReducer),
 });
 
 export default persistReducer(rootPersistConfig, rootReducer);

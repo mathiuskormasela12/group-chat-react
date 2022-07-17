@@ -10,5 +10,7 @@ export interface IReduxStates {
 	message: {
 		messages: IMessage[];
 		loading: boolean;
+		roomId: number;
+		roomName: string;
 	}
 }

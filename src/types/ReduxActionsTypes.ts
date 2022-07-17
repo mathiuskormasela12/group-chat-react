@@ -5,6 +5,7 @@ import {
   IMessage,
   IMessageLoadingReduxAction,
   IMessageReduxAction,
+  IMessageRoomNameReduxAction,
   IMessagesReduxAction,
 } from '../interfaces';
 
@@ -19,3 +20,6 @@ export type AddMessageFunc = (message: IMessage) => IMessageReduxAction;
 
 // eslint-disable-next-line no-unused-vars
 export type SetLoadingFunc = (loading: boolean) => IMessageLoadingReduxAction;
+
+// eslint-disable-next-line no-unused-vars
+export type SetRoomNameFunc = (roomId: number, roomName: string) => IMessageRoomNameReduxAction

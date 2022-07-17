@@ -1,14 +1,16 @@
 // ========== Join Chat Room
 // import all modules
 import React, { ChangeEvent, FormEvent, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import { AxiosError } from 'axios';
+import Swal from 'sweetalert2';
 import { Colors, Fonts } from '../themes';
-import { IHeroColJoinPageProps } from '../interfaces';
+import { IHeroColJoinPageProps, IJoinRoomBody, IReduxStates } from '../interfaces';
 import joinRoomImg from '../assets/images/join-room.svg';
 import changingRoomName from '../assets/images/changing-room-name.svg';
-import { setToken } from '../redux/actions';
+import { setRoomName, setToken } from '../redux/actions';
 
 // import all components
 import {
@@ -17,10 +19,12 @@ import {
   Button,
   Head,
 } from '../components';
+import Services from '../services';
 
 const JoinChatRoom: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const roomId: number = useSelector((reduxStates: IReduxStates) => reduxStates.message.roomId);
   const [state, setState] = useState({
     name: '',
     email: '',
@@ -37,6 +41,95 @@ const JoinChatRoom: React.FC = () => {
     }));
   };
 
+  const handleJoinRoom = async () => {
+    const body: IJoinRoomBody = {
+      name: state.name,
+      email: state.email,
+      roomCode: state.roomId,
+    };
+
+    try {
+      const { data } = await Services.joinRoom(body);
+
+      dispatch(
+        setToken(
+          data.results.accessToken,
+          data.results.refreshToken,
+        ),
+      );
+
+      if (!data.results.isRoomExists) {
+        setState((currentStates) => ({
+          ...currentStates,
+          message: '',
+        }));
+
+        Swal.fire({
+          title: 'Success',
+          text: 'The room has been created, please write your room name on the next page',
+          icon: 'success',
+          allowOutsideClick: false,
+          didClose() {
+            dispatch(setRoomName(data.results.idRoom, data.results.roomName));
+            setState((currentStates) => ({
+              ...currentStates,
+              isJoinPage: !currentStates.isJoinPage,
+            }));
+          },
+        });
+      } else {
+        Swal.fire({
+          title: 'Success',
+          text: 'You have joined successfully',
+          icon: 'success',
+          allowOutsideClick: false,
+          didClose() {
+            dispatch(setRoomName(data.results.idRoom, data.results.roomName));
+            navigate('/');
+          },
+        });
+      }
+    } catch (error) {
+      const err = error as AxiosError;
+
+      setState((currentState) => ({
+        ...currentState,
+        message: err.message,
+      }));
+    }
+  };
+
+  const handleUpdateRoomName = async () => {
+    try {
+      const { data } = await Services.updateRoomName(roomId, state.roomName);
+
+      dispatch(
+        setRoomName(
+          roomId,
+          data.results.roomName,
+        ),
+      );
+
+      Swal.fire({
+        title: 'Success',
+        text: 'The room name has been updated',
+        icon: 'success',
+        allowOutsideClick: false,
+        didClose() {
+          dispatch(setRoomName(roomId, data.results.roomName));
+          navigate('/');
+        },
+      });
+    } catch (error) {
+      const err = error as AxiosError;
+
+      setState((currentState) => ({
+        ...currentState,
+        message: err.message,
+      }));
+    }
+  };
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
@@ -47,11 +140,7 @@ const JoinChatRoom: React.FC = () => {
           message: 'Please complete the form',
         }));
       } else {
-        setState((currentStates) => ({
-          ...currentStates,
-          isJoinPage: !currentStates.isJoinPage,
-          message: '',
-        }));
+        handleJoinRoom();
       }
     } else if (!state.isJoinPage) {
       if (state.roomName === '') {
@@ -60,13 +149,7 @@ const JoinChatRoom: React.FC = () => {
           message: 'Please complete the form',
         }));
       } else {
-        dispatch(
-          setToken(
-            String(Date.now()),
-            String(Date.now()),
-          ),
-        );
-        navigate('/');
+        handleUpdateRoomName();
       }
     }
   };
