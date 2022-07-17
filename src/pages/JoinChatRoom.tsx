@@ -32,6 +32,7 @@ const JoinChatRoom: React.FC = () => {
     roomName: '',
     isJoinPage: true,
     message: '',
+    loading: false,
   });
 
   const onChange = (event: ChangeEvent<HTMLInputElement>, name: string) => {
@@ -42,6 +43,11 @@ const JoinChatRoom: React.FC = () => {
   };
 
   const handleJoinRoom = async () => {
+    setState((currentState) => ({
+      ...currentState,
+      loading: true,
+    }));
+
     const body: IJoinRoomBody = {
       name: state.name,
       email: state.email,
@@ -64,6 +70,11 @@ const JoinChatRoom: React.FC = () => {
           message: '',
         }));
 
+        setState((currentState) => ({
+          ...currentState,
+          loading: false,
+        }));
+
         Swal.fire({
           title: 'Success',
           text: 'The room has been created, please write your room name on the next page',
@@ -78,6 +89,11 @@ const JoinChatRoom: React.FC = () => {
           },
         });
       } else {
+        setState((currentState) => ({
+          ...currentState,
+          loading: false,
+        }));
+
         Swal.fire({
           title: 'Success',
           text: 'You have joined successfully',
@@ -95,11 +111,17 @@ const JoinChatRoom: React.FC = () => {
       setState((currentState) => ({
         ...currentState,
         message: err.message,
+        loading: false,
       }));
     }
   };
 
   const handleUpdateRoomName = async () => {
+    setState((currentState) => ({
+      ...currentState,
+      loading: true,
+    }));
+
     try {
       const { data } = await Services.updateRoomName(roomId, state.roomName);
 
@@ -109,6 +131,11 @@ const JoinChatRoom: React.FC = () => {
           data.results.roomName,
         ),
       );
+
+      setState((currentState) => ({
+        ...currentState,
+        loading: false,
+      }));
 
       Swal.fire({
         title: 'Success',
@@ -126,6 +153,7 @@ const JoinChatRoom: React.FC = () => {
       setState((currentState) => ({
         ...currentState,
         message: err.message,
+        loading: false,
       }));
     }
   };
@@ -181,8 +209,8 @@ const JoinChatRoom: React.FC = () => {
                   </Field>
                 </Control>
                 <Control>
-                  <Button type="submit">
-                    Create
+                  <Button type="submit" disabled={state.loading}>
+                    {state.loading ? 'Loading...' : 'Create'}
                   </Button>
                 </Control>
                 {state.message.length > 0 && (
@@ -249,8 +277,8 @@ const JoinChatRoom: React.FC = () => {
                 </Field>
               </Control>
               <Control>
-                <Button type="submit">
-                  Join
+                <Button type="submit" disabled={state.loading}>
+                  {state.loading ? 'Loading...' : 'Join'}
                 </Button>
               </Control>
               {state.message.length > 0 && (
